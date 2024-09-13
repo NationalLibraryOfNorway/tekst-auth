@@ -1,0 +1,24 @@
+server:
+  port: 8087
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  server:
+    port: 8088
+
+spring:
+  webflux:
+    base-path: /tekst-auth
+  application:
+    name: tekst-auth
+
+springdoc:
+  swagger-ui:
+    enabled: true
+
+keycloak:
+  nbauth-client-secret: ${KEYCLOAK_NBAUTH_CLIENT_SECRET}
+  nbauth-client-id: ${KEYCLOAK_NBAUTH_CLIENT_ID}
+  nbauth-issuer-url: ${KEYCLOAK_NBAUTH_ISSUER_URL}

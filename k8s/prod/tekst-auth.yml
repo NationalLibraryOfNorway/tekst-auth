@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tekst-auth
+  namespace: tekst-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tekst-auth
+  template:
+    metadata:
+      labels:
+        app: tekst-auth
+    spec:
+      priorityClassName: medium-priority
+      containers:
+        - name: app
+          image: <harbor_url>/tekst/tekst-auth:<version>
+          ports:
+            - name: app-port
+              containerPort: 8087
+            - name: actuator-port
+              containerPort: 8088
+          env:
+            - name: KEYCLOAK_NBAUTH_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-client
+                  key: id
+            - name: KEYCLOAK_NBAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-client
+                  key: secret
+            - name: KEYCLOAK_NBAUTH_ISSUER_URL
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-client
+                  key: issuer
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: actuator-port
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            failureThreshold: 3
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: actuator-port
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            failureThreshold: 3
+            timeoutSeconds: 1
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: tekst-auth
+spec:
+  ports:
+    - port: 8087
+      name: rest
+      targetPort: 8087
+    - port: 8088
+      name: http
+      targetPort: 8088
+  selector:
+    app: tekst-auth
+  type: ClusterIP
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tekst-auth-ingress
+  namespace: tekst-prod
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: <host_url>
+      http:
+        paths:
+          - backend:
+              service:
+                name: tekst-auth
+                port:
+                  number: 8087
+            path: /tekst-auth
+            pathType: Prefix
