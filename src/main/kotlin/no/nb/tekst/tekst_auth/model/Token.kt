@@ -8,5 +8,6 @@ data class Token(
     val refreshToken: String,
     val refreshExpires: ZonedDateTime,
     val groups: List<String>,
-    val name: String
+    val name: String,
+    val username: String
 )

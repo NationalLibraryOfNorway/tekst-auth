@@ -34,6 +34,7 @@ data class TokenResponse (
     val scope: String?
 ) {
     fun mapToToken(): Token {
+        val username = JWTParser.parse(this.accessToken).jwtClaimsSet.getClaim("preferred_username") as String
         val groups = JWTParser.parse(this.accessToken).jwtClaimsSet.getClaim("groups") as List<*>
         val name = JWTParser.parse(this.accessToken).jwtClaimsSet.getClaim("name") as String
         // All groups are strings, but the parser does not know this
@@ -45,7 +46,8 @@ data class TokenResponse (
             refreshToken = refreshToken,
             refreshExpires = ZonedDateTime.now(ZoneId.of("Europe/Oslo")).plusSeconds(refreshExpiresIn.toLong()),
             groups = filteredGroups,
-            name = name
+            name = name,
+            username = username
         )
     }
 }
