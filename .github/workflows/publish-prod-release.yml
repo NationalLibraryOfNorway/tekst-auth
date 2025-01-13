@@ -10,7 +10,7 @@ jobs:
     environment: prod
     with:
       ENVIRONMENT: prod
-      JDK_VERSION: 17
+      JDK_VERSION: 21
       MAVEN_VERSION: 3.9.6
       USE_MAVEN_PROXY_SETTINGS: true
     secrets:
