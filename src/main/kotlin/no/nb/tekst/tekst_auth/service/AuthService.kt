@@ -16,7 +16,7 @@ class AuthService (
 ) {
 
     private val openIdWebclient = WebClient.builder()
-        .baseUrl(keycloakConfig.nbauthIssuerUrl + "/protocol/openid-connect")
+        .baseUrl(keycloakConfig.nbauthBaseUrl + "/realm/" + keycloakConfig.nbauthRealm + "/protocol/openid-connect")
         .defaultHeader("Content-Type", "application/x-www-form-urlencoded")
         .build()
 

@@ -19,6 +19,7 @@ springdoc:
     enabled: true
 
 keycloak:
-  nbauth-client-secret: ${KEYCLOAK_NBAUTH_CLIENT_SECRET}
-  nbauth-client-id: ${KEYCLOAK_NBAUTH_CLIENT_ID}
-  nbauth-issuer-url: ${KEYCLOAK_NBAUTH_ISSUER_URL}
+  nbauth-client-secret: ${KEYCLOAK_CLIENT_SECRET}
+  nbauth-client-id: ${KEYCLOAK_CLIENT_ID}
+  nbauth-base-url: ${KEYCLOAK_BASE_URL}
+  nbauth-realm: ${KEYCLOAK_REALM}
