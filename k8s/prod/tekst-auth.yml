@@ -22,22 +22,9 @@ spec:
               containerPort: 8087
             - name: actuator-port
               containerPort: 8088
-          env:
-            - name: KEYCLOAK_NBAUTH_CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak-client
-                  key: id
-            - name: KEYCLOAK_NBAUTH_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak-client
-                  key: secret
-            - name: KEYCLOAK_NBAUTH_ISSUER_URL
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak-client
-                  key: issuer
+          envFrom:
+            - secretRef:
+                name: keycloak-nbauth-tekst-secret
           imagePullPolicy: Always
           livenessProbe:
             httpGet:

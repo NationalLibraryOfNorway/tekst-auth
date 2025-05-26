@@ -4,7 +4,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 
 @ConfigurationProperties(prefix = "keycloak")
 class KeycloakConfig (
-    val nbauthIssuerUrl: String,
+    val nbauthBaseUrl: String,
     val nbauthClientId: String,
-    val nbauthClientSecret: String
+    val nbauthClientSecret: String,
+    val nbauthRealm: String
 )
